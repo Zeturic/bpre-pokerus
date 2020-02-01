@@ -129,6 +129,7 @@ void MaybeUpdateMonPokerusTime(struct Pokemon *mon)
         UpdateMonPokerusTime(mon, 1);
 }
 
+// https://github.com/pret/pokeemerald/blob/9a6c2c25d08ef157cc4800014651bd0c679f6fc5/src/field_control_avatar.c#L615
 void UpdateHappinessStepCounter(void)
 {
     u16 *ptr = GetVarPointer(VAR_HAPPINESS_STEP_COUNTER);
