@@ -1,4 +1,5 @@
 #include "global.h"
+#include "event_data.h"
 #include "pokemon.h"
 #include "random.h"
 #include "util.h"
@@ -76,28 +77,32 @@ void PartySpreadPokerus(struct Pokemon *party)
 }
 
 // https://github.com/pret/pokeemerald/blob/9a6c2c25d08ef157cc4800014651bd0c679f6fc5/src/pokemon.c#L5991
+void UpdateMonPokerusTime(struct Pokemon *mon, u16 days)
+{
+    if (GetMonData(mon, MON_DATA_SPECIES, 0))
+    {
+        u8 pokerus = GetMonData(mon, MON_DATA_POKERUS, 0);
+        if (pokerus & 0xF)
+        {
+            if ((pokerus & 0xF) < days || days > 4)
+                pokerus &= 0xF0;
+            else
+                pokerus -= days;
+
+            if (pokerus == 0)
+                pokerus = 0x10;
+
+            SetMonData(mon, MON_DATA_POKERUS, &pokerus);
+        }
+    }
+}
+
+// https://github.com/pret/pokeemerald/blob/9a6c2c25d08ef157cc4800014651bd0c679f6fc5/src/pokemon.c#L5991
 void UpdatePartyPokerusTime(u16 days)
 {
     int i;
     for (i = 0; i < PARTY_SIZE; i++)
-    {
-        if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES, 0))
-        {
-            u8 pokerus = GetMonData(&gPlayerParty[i], MON_DATA_POKERUS, 0);
-            if (pokerus & 0xF)
-            {
-                if ((pokerus & 0xF) < days || days > 4)
-                    pokerus &= 0xF0;
-                else
-                    pokerus -= days;
-
-                if (pokerus == 0)
-                    pokerus = 0x10;
-
-                SetMonData(&gPlayerParty[i], MON_DATA_POKERUS, &pokerus);
-            }
-        }
-    }
+        UpdateMonPokerusTime(&gPlayerParty[i], days);
 }
 
 #if 0 <= Special_IsPokerusInParty
@@ -110,6 +115,37 @@ bool8 IsPokerusInParty(void)
         return FALSE;
     }
     return TRUE;
+}
+
+#endif
+
+#if 0 <= CHANCE_REDUCE_POKERUS_128_STEPS
+
+void MaybeUpdateMonPokerusTime(struct Pokemon *mon)
+{
+    u8 rnd = Random() % 100;
+
+    if (rnd < CHANCE_REDUCE_POKERUS_128_STEPS)
+        UpdateMonPokerusTime(mon, 1);
+}
+
+void UpdateHappinessStepCounter(void)
+{
+    u16 *ptr = GetVarPointer(VAR_HAPPINESS_STEP_COUNTER);
+    int i;
+
+    (*ptr)++;
+    (*ptr) %= 128;
+    if (*ptr == 0)
+    {
+        struct Pokemon *mon = gPlayerParty;
+        for (i = 0; i < PARTY_SIZE; i++)
+        {
+            AdjustFriendship(mon, FRIENDSHIP_EVENT_WALKING);
+            MaybeUpdateMonPokerusTime(mon);
+            mon++;
+        }
+    }
 }
 
 #endif

@@ -1,8 +1,8 @@
 ## Pokérus
 
-Due to the lack of a RTC in FR, Pokérus was scaled back. It can't be randomly caught, spread, or cured. Its EV-doubling effect does still work, if you trade something with Pokérus to FR.
+Due to the lack of a RTC in FR, [Pokérus](https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9rus) was scaled back. It can't be randomly caught, spread, or cured. Its EV-doubling effect does still work, if you trade something with Pokérus to FR, but that's pretty much it.
 
-This adds the relevant functions from [pokeemerald](github.com/pret/pokeemerald) back in, allowing for it to be randomly caught, spread, and (hypothetically) cured.
+This adds the relevant functions from [pokeemerald](github.com/pret/pokeemerald) back in, allowing for it to be randomly caught, spread, and cured.
 
 ### Build Instructions
 
@@ -31,7 +31,11 @@ If the given address is acceptable (i.e. is word-aligned and has enough bytes of
 
 There is a special in RSE that checks if a Pokémon in your party has Pokérus. It's used in the Nurse Joy script. This special doesn't normally exist in FR, but it is included in this repo.
 
-If you don't said this special to be inserted, make sure to set `Special_IsPokerusInParty` to `-1`. If you do want it, set it to an unused special id. It's currently set to `0x133`, which is unused by default, but if that doesn't work for you, feel free to change it.
+If you don't want said special to be inserted, make sure to set `Special_IsPokerusInParty` to `-1`. If you do want it, set it to an unused special id. It's currently set to `0x133`, which is unused by default, but if that doesn't work for you, feel free to change it.
+
+Curing Pokérus is normally tied to the RTC. Basically, it has a "days left" counter and every day, all the Pokémon in the player's party with Pokérus have that counter decremented. Because FR has multiple RTCs which aren't mutually compatible and are sometimes buggy, this feature wasn't included here.
+
+Instead, every 128 steps the player walks has a small chance to decrement the counter. If you don't want this (and thus it will never be cured), make sure to set `CHANCE_REDUCE_POKERUS_128_STEPS` to `-1`. If you do want it, `CHANCE_REDUCE_POKERUS_128_STEPS` defaults to `5` percent, but feel free to change it.
 
 #### Building the project itself
 
@@ -45,16 +49,10 @@ This won't actually modify `rom.gba`, instead your output will be in `test.gba`.
 
 ### Additional Notes
 
-I listed the curing of Pokérus as hypothetical because even though `UpdatePartyPokerusTime` gets inserted, it'll never actually be called.
-
-`UpdatePartyPokerusTime` is the function responsible for decreasing the Pokérus timer for each Pokémon in the party, and eventually curing it. In Emerald, `UpdatePartyPokerusTime` is called from `UpdatePerDay`, which is of course integrated with the RTC.
-
-More work would need to be done in order to integrate `UpdatePartyPokerusTime` properly with a FR RTC. Randomly catching or spreading Pokérus is entirely down to RNG, not RTC, so they work fine.
-
 Nurse Joy's script doesn't include any sort of message about Pokérus. If you inserted the special, you can modify her script to do so. Check the Nurse Joy script in Emerald to see how to use the special; in Emerald, `Special_IsPokerusInParty` is `0x136`.
 
 ### Credits
 
 The project structure and some of the build tools are from [pokeemerald](https://github.com/pret/pokeemerald).
 
-The code for the inserted functions to was lifted directly from [pokeemerald](https://github.com/pret/pokeemerald) as well.
+Several Pokérus-related functions were lifted directly (or with minor changes) from [pokeemerald](https://github.com/pret/pokeemerald) as well.

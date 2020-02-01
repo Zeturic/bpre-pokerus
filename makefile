@@ -13,7 +13,7 @@ SRC_FILES = $(wildcard src/*.c)
 OBJ_FILES = $(SRC_FILES:src/%.c=build/src/%.o)
 MAIN_ASM_INCLUDES = $(wildcard *.s)
 
-CFLAGS = -O2 -mlong-calls -Wall -Wextra -mthumb -mno-thumb-interwork -fno-inline -fno-builtin -std=gnu11 -mabi=apcs-gnu -mcpu=arm7tdmi -march=armv4t -mtune=arm7tdmi -x c -c -I include -I gflib -D Special_IsPokerusInParty=$(Special_IsPokerusInParty)
+CFLAGS = -O2 -mlong-calls -Wall -Wextra -mthumb -mno-thumb-interwork -fno-inline -fno-builtin -std=gnu11 -mabi=apcs-gnu -mcpu=arm7tdmi -march=armv4t -mtune=arm7tdmi -x c -c -I include -I gflib -D Special_IsPokerusInParty=$(Special_IsPokerusInParty) -D CHANCE_REDUCE_POKERUS_128_STEPS=$(CHANCE_REDUCE_POKERUS_128_STEPS)
 
 LD = $(PREFIX)ld
 LDFLAGS = --relocatable -T rom.ld
@@ -27,7 +27,7 @@ SCANINC = tools/scaninc/scaninc
 TOOLS = $(PREPROC) $(SCANINC)
 
 ARMIPS ?= armips
-ARMIPS_FLAGS = -sym test.sym -equ Special_IsPokerusInParty $(Special_IsPokerusInParty)
+ARMIPS_FLAGS = -sym test.sym -equ Special_IsPokerusInParty $(Special_IsPokerusInParty) -equ CHANCE_REDUCE_POKERUS_128_STEPS $(CHANCE_REDUCE_POKERUS_128_STEPS)
 
 PYTHON ?= python
 FREESIA = $(PYTHON) tools/freesia
