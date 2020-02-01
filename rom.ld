@@ -1,0 +1,14 @@
+
+GetMonData              = 0x0803FBE8 |1;
+SetMonData              = 0x0804037C |1;
+CheckPartyHasHadPokerus = 0x08043AD8 |1;
+
+Random                  = 0x08044EC8 |1;
+
+__umodsi3               = 0x081E4684 |1;
+
+/* -------------------------------------------------------------------------- */
+
+gPlayerParty            = 0x02024284;
+
+gBitTable               = 0x0825E45C;
