@@ -1,10 +1,6 @@
 # where to start looking for free space
 START_AT = 0x0871A240
 
-# whether to insert the Pokérus checking special
-# true or false
-INSERT_POKERUS_SPECIAL = false
-
 # special id for the Pokérus checking special
-# ignored if INSERT_POKERUS_SPECIAL is false
+# set to -1 for the special to not be inserted
 Special_IsPokerusInParty = 0x133

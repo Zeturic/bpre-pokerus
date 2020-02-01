@@ -13,7 +13,7 @@ SRC_FILES = $(wildcard src/*.c)
 OBJ_FILES = $(SRC_FILES:src/%.c=build/src/%.o)
 MAIN_ASM_INCLUDES = $(wildcard *.s)
 
-CFLAGS = -O2 -mlong-calls -Wall -Wextra -mthumb -mno-thumb-interwork -fno-inline -fno-builtin -std=gnu11 -mabi=apcs-gnu -mcpu=arm7tdmi -march=armv4t -mtune=arm7tdmi -x c -c -I include -I gflib $(POKERUS_SPECIAL_CFLAGS)
+CFLAGS = -O2 -mlong-calls -Wall -Wextra -mthumb -mno-thumb-interwork -fno-inline -fno-builtin -std=gnu11 -mabi=apcs-gnu -mcpu=arm7tdmi -march=armv4t -mtune=arm7tdmi -x c -c -I include -I gflib -D Special_IsPokerusInParty=$(Special_IsPokerusInParty)
 
 LD = $(PREFIX)ld
 LDFLAGS = --relocatable -T rom.ld
@@ -27,7 +27,7 @@ SCANINC = tools/scaninc/scaninc
 TOOLS = $(PREPROC) $(SCANINC)
 
 ARMIPS ?= armips
-ARMIPS_FLAGS = -sym test.sym $(POKERUS_SPECIAL_ARMIPS_FLAGS)
+ARMIPS_FLAGS = -sym test.sym -equ Special_IsPokerusInParty $(Special_IsPokerusInParty)
 
 PYTHON ?= python
 FREESIA = $(PYTHON) tools/freesia
@@ -36,14 +36,6 @@ FREESIAFLAGS = --rom rom.gba --start-at $(START_AT)
 START_AT ?= 0x0871A240
 INSERT_POKERUS_SPECIAL ?= true
 Special_IsPokerusInParty ?= 0x133
-
-ifeq ($(INSERT_POKERUS_SPECIAL),true)
-POKERUS_SPECIAL_CFLAGS = -D INSERT_POKERUS_SPECIAL=
-POKERUS_SPECIAL_ARMIPS_FLAGS = -equ INSERT_POKERUS_SPECIAL 1 -equ Special_IsPokerusInParty $(Special_IsPokerusInParty)
-else
-POKERUS_SPECIAL_CFLAGS = 
-POKERUS_SPECIAL_ARMIPS_FLAGS = -equ INSERT_POKERUS_SPECIAL 0
-endif
 
 # ------------------------------------------------------------------------------
 

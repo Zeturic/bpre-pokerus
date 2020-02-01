@@ -29,7 +29,7 @@
     .pool
 .endarea
 
-.if INSERT_POKERUS_SPECIAL
+.if 0 <= Special_IsPokerusInParty
     .org gSpecials + Special_IsPokerusInParty * 4
     .word IsPokerusInParty |1
 .endif
