@@ -1,6 +1,7 @@
 
 GetMonData              = 0x0803FBE8 |1;
 SetMonData              = 0x0804037C |1;
+CheckPartyPokerus       = 0x08043A70 |1;
 CheckPartyHasHadPokerus = 0x08043AD8 |1;
 
 Random                  = 0x08044EC8 |1;

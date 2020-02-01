@@ -29,4 +29,11 @@
     .pool
 .endarea
 
+.if INSERT_POKERUS_SPECIAL
+    .org gSpecials + Special_IsPokerusInParty * 4
+    .word IsPokerusInParty |1
+.endif
+
 .close
+
+.definelabel gSpecials, readu32("rom.gba", 0x08069F18 & 0x1FFFFFF)

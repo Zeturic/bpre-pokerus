@@ -99,3 +99,17 @@ void UpdatePartyPokerusTime(u16 days)
         }
     }
 }
+
+#ifdef INSERT_POKERUS_SPECIAL
+
+// https://github.com/pret/pokeemerald/blob/9a6c2c25d08ef157cc4800014651bd0c679f6fc5/src/field_specials.c#L1489
+bool8 IsPokerusInParty(void)
+{
+    if (!CheckPartyPokerus(gPlayerParty, 0x3f))
+    {
+        return FALSE;
+    }
+    return TRUE;
+}
+
+#endif
