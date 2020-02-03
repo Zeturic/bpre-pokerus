@@ -33,7 +33,7 @@ There is a special in RSE that checks if a Pokémon in your party has Pokérus. 
 
 If you don't want said special to be inserted, make sure to set `Special_IsPokerusInParty` to `-1`. If you do want it, set it to an unused special id. It's currently set to `0x133`, which is unused by default, but if that doesn't work for you, feel free to change it.
 
-Curing Pokérus is normally tied to the RTC. Basically, it has a "days left" counter and every day, all the Pokémon in the player's party with Pokérus have that counter decremented. Because FR has multiple RTCs which aren't mutually compatible and are sometimes buggy, this feature wasn't included here.
+Curing Pokérus is normally tied to the RTC. Basically, it has a "days left" counter and every day, all the Pokémon in the player's party with Pokérus have that counter decremented. Because not every FR hack includes an RTC, this feature wasn't included here. An additional issue is the fact that there are multiple RTC implementations which would have to be supported separately.
 
 Instead, every 128 steps the player walks has a small chance to decrement the counter. If you don't want this (and thus it will never be cured), make sure to set `CHANCE_REDUCE_POKERUS_128_STEPS` to `-1`. If you do want it, `CHANCE_REDUCE_POKERUS_128_STEPS` defaults to `5` percent, but feel free to change it.
 
